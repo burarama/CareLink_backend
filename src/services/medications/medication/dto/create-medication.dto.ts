@@ -1,5 +1,5 @@
 import { IsString, IsDate, IsOptional, IsEnum, IsNumber, IsBoolean, IsObject } from "class-validator";
-import { MedicationStatus } from 'generated/prisma/client';
+import { MedicationStatus } from '@prisma/client';
 
 export class CreateMedicationDto {
   @IsString()

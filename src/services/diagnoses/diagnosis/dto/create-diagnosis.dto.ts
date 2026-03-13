@@ -1,5 +1,5 @@
 import { IsString, IsDate, IsOptional, IsEnum } from "class-validator";
-import { DiagnosisType, DiagnosisStatus } from 'generated/prisma/client';
+import { DiagnosisType, DiagnosisStatus } from '@prisma/client';
 
 export class CreateDiagnosisDto {
     // links

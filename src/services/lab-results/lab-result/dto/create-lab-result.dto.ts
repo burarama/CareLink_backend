@@ -1,5 +1,5 @@
 import { IsString, IsDate, IsOptional, IsEnum, IsNumber, IsBoolean, IsObject } from "class-validator";
-import { LabCategory, LabResultStatus } from 'generated/prisma/client';
+import { LabCategory, LabResultStatus } from '@prisma/client';
 
 export class CreateLabResultDto {
     // links

@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsDate, IsOptional, IsBoolean, IsNumber } from "class-validator";
-import { MatchStatus } from 'generated/prisma/client';
+import { MatchStatus } from '@prisma/client';
 
 export class CreateSourcePatientRecordDto {
     //    masterPatientId   String?  // null if not yet matched

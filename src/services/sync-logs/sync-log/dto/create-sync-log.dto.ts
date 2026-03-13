@@ -1,5 +1,5 @@
 import { IsString, IsDate, IsOptional, IsEnum, IsNumber, IsBoolean, IsObject } from "class-validator";
-import { SyncStatus } from 'generated/prisma/client';
+import { SyncStatus } from '@prisma/client';
 
 export class CreateSyncLogDto {
     @IsString()

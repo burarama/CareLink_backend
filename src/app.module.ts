@@ -13,9 +13,10 @@ import { MergeLogModule } from './services/merge-logs/merge-log/merge-log.module
 import { RiskScoreModule } from './services/risk-scores/risk-score/risk-score.module';
 import { SyncLogModule } from './services/sync-logs/sync-log/sync-log.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { FacililityModule } from './integrations/facilility/facilility.module';
 
 @Module({
-  imports: [FacultyModule, MasterpatientModule, SourcePatientRecordModule, EncounterModule, DiagnosisModule, LabResultModule, MedicationModule, MatchLogModule, MergeLogModule, RiskScoreModule, SyncLogModule, PrismaModule],
+  imports: [FacultyModule, MasterpatientModule, SourcePatientRecordModule, EncounterModule, DiagnosisModule, LabResultModule, MedicationModule, MatchLogModule, MergeLogModule, RiskScoreModule, SyncLogModule, PrismaModule, FacililityModule],
   controllers: [AppController],
   providers: [AppService],
 })

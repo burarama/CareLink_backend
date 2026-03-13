@@ -5,31 +5,31 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class DiagnosisService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
   create(createDiagnosisDto: CreateDiagnosisDto) {
     return this.prisma.diagnosis.create({
       data: {
-  masterPatientId: createDiagnosisDto.masterPatientId,    
-  encounterId: createDiagnosisDto.encounterId,
+        masterPatientId: createDiagnosisDto.masterPatientId,
+        encounterId: createDiagnosisDto.encounterId,
 
-  icdCode: createDiagnosisDto.icdCode,
-  icdVersion: createDiagnosisDto.icdVersion,
-  icdDescription: createDiagnosisDto.icdDescription,
-  icdChapter: createDiagnosisDto.icdChapter,
-  icdBlock: createDiagnosisDto.icdBlock,
+        icdCode: createDiagnosisDto.icdCode,
+        icdVersion: createDiagnosisDto.icdVersion,
+        icdDescription: createDiagnosisDto.icdDescription,
+        icdChapter: createDiagnosisDto.icdChapter,
+        icdBlock: createDiagnosisDto.icdBlock,
 
-  diagnosisType: createDiagnosisDto.diagnosisType,
-  status: createDiagnosisDto.status,
-  severity: createDiagnosisDto.severity,
-  onsetDate: createDiagnosisDto.onsetDate,
-  resolvedDate: createDiagnosisDto.resolvedDate,
-  notes: createDiagnosisDto.notes,
+        diagnosisType: createDiagnosisDto.diagnosisType,
+        status: createDiagnosisDto.status,
+        severity: createDiagnosisDto.severity,
+        onsetDate: createDiagnosisDto.onsetDate,
+        resolvedDate: createDiagnosisDto.resolvedDate,
+        notes: createDiagnosisDto.notes,
 
-  diagnosedBy: createDiagnosisDto.diagnosedBy,
-  facilityId: createDiagnosisDto.facilityId,
-  fhirResourceJson: createDiagnosisDto.fhirResourceJson,
+        diagnosedBy: createDiagnosisDto.diagnosedBy,
+        facilityId: createDiagnosisDto.facilityId,
+        fhirResourceJson: createDiagnosisDto.fhirResourceJson,
 
-  createdAt: new Date(),
+        createdAt: new Date(),
       },
     });
   }
@@ -47,7 +47,7 @@ export class DiagnosisService {
   update(id: string, updateDiagnosisDto: UpdateDiagnosisDto) {
     return this.prisma.diagnosis.update({
       where: { id },
-      data: {...updateDiagnosisDto},
+      data: { ...updateDiagnosisDto },
     });
   }
 
