@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { CreateMasterpatientDto } from './dto/create-masterpatient.dto';
 import { UpdateMasterpatientDto } from './dto/update-masterpatient.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { MasterPatientStatus } from 'generated/prisma';
 
 @Injectable()
 export class MasterpatientService {
