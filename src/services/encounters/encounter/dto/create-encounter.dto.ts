@@ -1,15 +1,15 @@
 import { IsString, IsEnum, IsDate, IsOptional, IsNumber } from "class-validator";
-import { EncounterStatus, EncounterType } from "generated/prisma/client";
+import { EncounterStatus, EncounterType } from '@prisma/client';
 
 export class CreateEncounterDto {
-     // links
-    @IsString()
-    masterPatientId: string;
-    @IsString()
-    @IsOptional()
-    sourceRecordId?: string;
-    @IsString()
-    facilityId: string;
+  // links
+  @IsString()
+  masterPatientId: string;
+  @IsString()
+  @IsOptional()
+  sourceRecordId?: string;
+  @IsString()
+  facilityId: string;
 
   // source identifiers
   @IsString()

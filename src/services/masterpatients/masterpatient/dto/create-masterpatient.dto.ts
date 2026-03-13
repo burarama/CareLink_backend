@@ -1,5 +1,5 @@
 import { IsString, IsDate, IsEnum, IsOptional } from "class-validator";
-import { BloodType, Gender, MasterPatientStatus } from "generated/prisma/client";
+import { BloodType, Gender, MasterPatientStatus } from '@prisma/client';
 
 export class CreateMasterpatientDto {
     @IsString()
@@ -57,7 +57,7 @@ export class CreateMasterpatientDto {
     status: MasterPatientStatus;
 
     @IsString()
-    @IsOptional()   
+    @IsOptional()
     mergedIntoId?: string;
 
     // @IsDate()

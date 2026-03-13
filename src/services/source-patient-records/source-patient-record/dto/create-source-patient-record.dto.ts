@@ -1,85 +1,85 @@
 import { IsString, IsEnum, IsDate, IsOptional, IsBoolean, IsNumber } from "class-validator";
-import { MatchStatus } from "generated/prisma/client";
+import { MatchStatus } from '@prisma/client';
 
 export class CreateSourcePatientRecordDto {
-//    masterPatientId   String?  // null if not yet matched
+    //    masterPatientId   String?  // null if not yet matched
     @IsString()
     @IsOptional()
     masterPatientId?: string;
-//   matchStatus       MatchStatus @default(PENDING)
+    //   matchStatus       MatchStatus @default(PENDING)
     @IsEnum(MatchStatus)
     @IsOptional()
     matchStatus?: MatchStatus;
-//   matchConfidence   Float?   // 0.0 - 1.0
+    //   matchConfidence   Float?   // 0.0 - 1.0
     @IsNumber()
     @IsOptional()
     matchConfidence?: number;
-//   matchedAt         DateTime?
+    //   matchedAt         DateTime?
     @IsDate()
     @IsOptional()
     matchedAt?: Date;
-//   matchedBy         String?  // "SYSTEM_AUTO" or userId
+    //   matchedBy         String?  // "SYSTEM_AUTO" or userId
     @IsString()
     @IsOptional()
     matchedBy?: string;
 
-//   // source facility
-//   facilityId        String
+    //   // source facility
+    //   facilityId        String
     @IsString()
     facilityId: string;
-//   facility          Facility @relation(fields: [facilityId], references: [id])
+    //   facility          Facility @relation(fields: [facilityId], references: [id])
 
-//   // original IDs from the hospital system
-//   facilityPatientId String   // hospital's own patient ID
+    //   // original IDs from the hospital system
+    //   facilityPatientId String   // hospital's own patient ID
     @IsString()
     facilityPatientId: string;
-//   facilityMrn       String?  // medical record number
+    //   facilityMrn       String?  // medical record number
     @IsString()
     @IsOptional()
     facilityMrn?: string;
 
-//   // raw demographics as received from HMIS
-//   rawFullName       String
+    //   // raw demographics as received from HMIS
+    //   rawFullName       String
     @IsString()
     rawFullName: string;
-//   rawDateOfBirth    DateTime?
+    //   rawDateOfBirth    DateTime?
     @IsDate()
     @IsOptional()
     rawDateOfBirth?: Date;
-//   rawGender         String?
+    //   rawGender         String?
     @IsString()
     @IsOptional()
     rawGender?: string;
-//   rawNationalId     String?
+    //   rawNationalId     String?
     @IsString()
     @IsOptional()
     rawNationalId?: string;
-//   rawPhoneNumber    String?
+    //   rawPhoneNumber    String?
     @IsString()
     @IsOptional()
     rawPhoneNumber?: string;
-//   rawCounty         String?
+    //   rawCounty         String?
     @IsString()
     @IsOptional()
     rawCounty?: string;
 
-//   // source metadata
-//   fhirResourceId    String?  // FHIR Patient resource ID
+    //   // source metadata
+    //   fhirResourceId    String?  // FHIR Patient resource ID
     @IsString()
     @IsOptional()
     fhirResourceId?: string;
-//   fhirResourceJson  Json?    // full FHIR resource stored as-is
+    //   fhirResourceJson  Json?    // full FHIR resource stored as-is
     @IsString()
     @IsOptional()
     fhirResourceJson?: string;
-//   sourceSyncAt      DateTime @default(now())
+    //   sourceSyncAt      DateTime @default(now())
     @IsDate()
     @IsOptional()
     sourceSyncAt?: Date;
-//   sourceCreatedAt   DateTime? // when hospital created this record
+    //   sourceCreatedAt   DateTime? // when hospital created this record
     @IsDate()
     @IsOptional()
     sourceCreatedAt?: Date;
 
-//   createdAt         DateTime @default(now())
+    //   createdAt         DateTime @default(now())
 }
