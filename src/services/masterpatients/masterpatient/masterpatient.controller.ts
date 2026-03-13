@@ -3,7 +3,7 @@ import { MasterpatientService } from './masterpatient.service';
 import { CreateMasterpatientDto } from './dto/create-masterpatient.dto';
 import { UpdateMasterpatientDto } from './dto/update-masterpatient.dto';
 
-@Controller('masterpatient')
+@Controller('masterpatients')
 export class MasterpatientController {
   constructor(private readonly masterpatientService: MasterpatientService) {}
 

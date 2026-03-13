@@ -28,7 +28,13 @@ export class MatchLogService {
   }
 
   findAll() {
-    return this.prisma.matchLog.findMany();
+    return this.prisma.matchLog.findMany(
+      {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      } 
+    );
   }
 
   findOne(id: string) {

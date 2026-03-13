@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FacultyModule } from './services/faculties/faculty/faculty.module';
 import { MasterpatientModule } from './services/masterpatients/masterpatient/masterpatient.module';
 import { SourcePatientRecordModule } from './services/source-patient-records/source-patient-record/source-patient-record.module';
 import { EncounterModule } from './services/encounters/encounter/encounter.module';
@@ -13,11 +12,11 @@ import { MergeLogModule } from './services/merge-logs/merge-log/merge-log.module
 import { RiskScoreModule } from './services/risk-scores/risk-score/risk-score.module';
 import { SyncLogModule } from './services/sync-logs/sync-log/sync-log.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { FacililityModule } from './integrations/facilility/facilility.module';
+import { FacilitiesModule } from './services/facilities/facilities.module';
 
 @Module({
-  imports: [FacultyModule, MasterpatientModule, SourcePatientRecordModule, EncounterModule, DiagnosisModule, LabResultModule, MedicationModule, MatchLogModule, MergeLogModule, RiskScoreModule, SyncLogModule, PrismaModule, FacililityModule],
+  imports: [MasterpatientModule, SourcePatientRecordModule, EncounterModule, DiagnosisModule, LabResultModule, MedicationModule, MatchLogModule, MergeLogModule, RiskScoreModule, SyncLogModule, PrismaModule, FacilitiesModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

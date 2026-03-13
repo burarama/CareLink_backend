@@ -39,11 +39,17 @@ export class MasterpatientService {
   }
 
   findAll() {
-    return this.prisma.masterPatient.findMany();
+    return this.prisma.masterPatient.findMany(
+      {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }
+    );
   }
 
   findOne(id: string) {
-    return this.prisma.masterPatient.findUnique({
+    return this.prisma.masterPatient.findUnique({ 
       where: { id },
     });
   }

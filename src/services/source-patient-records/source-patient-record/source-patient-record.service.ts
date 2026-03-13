@@ -33,7 +33,13 @@ export class SourcePatientRecordService {
   }
 
   findAll() {
-    return this.prisma.sourcePatientRecord.findMany();
+    return this.prisma.sourcePatientRecord.findMany(
+      {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }
+      );
   }
 
   findOne(id: string) {

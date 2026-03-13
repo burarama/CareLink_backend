@@ -35,10 +35,16 @@ export class MedicationService {
       fhirResourceJson: createMedicationDto.fhirResourceJson as any,
       createdAt: new Date(),
     } });
-  }
+  } 
 
   findAll() {
-    return this.prisma.medication.findMany();
+    return this.prisma.medication.findMany(
+      {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }
+    );
   }
 
   findOne(id: string) {

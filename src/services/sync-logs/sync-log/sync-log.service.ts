@@ -27,7 +27,13 @@ export class SyncLogService {
   }
 
   findAll() {
-    return this.prisma.syncLog.findMany();
+    return this.prisma.syncLog.findMany(
+      {
+        orderBy: {
+          startedAt: 'desc',
+        },
+      }
+    );
   }
 
   findOne(id: string) {

@@ -37,7 +37,13 @@ export class LabResultService {
   }
 
   findAll() {
-    return this.prisma.labResult.findMany();
+    return this.prisma.labResult.findMany(
+      {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }
+    );
   }
 
   findOne(id: string) {

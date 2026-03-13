@@ -21,9 +21,15 @@ export class MergeLogService {
   }
 
   findAll() {
-    return this.prisma.mergeLog.findMany();
+    return this.prisma.mergeLog.findMany(
+      {
+        orderBy: {
+          createdAt: 'desc',
+        },
+      }
+    );
   }
-
+  
   findOne(id: string) {
     return this.prisma.mergeLog.findUnique({ where: { id } });
   }

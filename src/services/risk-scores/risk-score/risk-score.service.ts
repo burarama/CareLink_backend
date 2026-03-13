@@ -22,7 +22,13 @@ export class RiskScoreService {
   }
 
   findAll() {
-    return this.prisma.riskScore.findMany();
+    return this.prisma.riskScore.findMany(
+      {
+        orderBy: {
+          calculatedAt: 'desc',
+        },
+      }
+    );    
   }
 
   findOne(id: string) {
