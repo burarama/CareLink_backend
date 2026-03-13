@@ -138,6 +138,7 @@ model Facility {
   isActive   Boolean           @default(true)
   lastSyncAt DateTime?
   createdAt  DateTime          @default(now())
+  encounters Encounter[]
 
   @@map("facilities")
 }
@@ -160,11 +161,12 @@ model FacilityPatient {
 //encounter
 model Encounter {
   id                String   @id @default(uuid()) @db.Uuid
-  masterPatientId   String   @db.Uuid
+  masterPatientId   String?
   facilityPatientId String   @db.Uuid
+  facilityId        String   @db.Uuid
   encounterDate     DateTime @default(now())
 
-  masterPatient   MasterPatient   @relation(fields: [masterPatientId], references: [id])
+  facility        Facility        @relation(fields: [facilityId], references: [id])
   facilityPatient FacilityPatient @relation(fields: [facilityPatientId], references: [id])
 }
 
@@ -172,10 +174,10 @@ model Encounter {
 model MasterPatient {
   id        String    @id @default(uuid()) @db.Uuid
   firstName String
+  idNumber String
   lastName  String
   dob       DateTime?
   gender    String?
 
   sourcePatients FacilityPatient[]
-  encounters     Encounter[]
 }
