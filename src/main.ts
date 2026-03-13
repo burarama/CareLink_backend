@@ -16,6 +16,13 @@ async function bootstrap() {
   //database errors
   app.useGlobalFilters(new PrismaExceptionFilter());
 
+  //validation
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }));
+
   //api versioning
   app.enableVersioning({
     type: VersioningType.URI,
