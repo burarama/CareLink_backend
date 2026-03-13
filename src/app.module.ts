@@ -15,7 +15,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { FacilitiesModule } from './services/facilities/facilities.module';
 
 @Module({
-  imports: [MasterpatientModule, SourcePatientRecordModule, EncounterModule, DiagnosisModule, LabResultModule, MedicationModule, MatchLogModule, MergeLogModule, RiskScoreModule, SyncLogModule, PrismaModule, FacilitiesModule],
+  imports: [MasterpatientModule, SourcePatientRecordModule, EncounterModule, DiagnosisModule, LabResultModule, MedicationModule, MatchLogModule, MergeLogModule, RiskScoreModule, SyncLogModule, PrismaModule, FacilitiesModule, ParticleModule],
   controllers: [AppController],
   providers: [AppService],
 })
