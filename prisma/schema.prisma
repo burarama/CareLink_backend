@@ -141,7 +141,7 @@ enum SyncStatus {
 // ─────────────────────────────────────────────
 
 model Facility {
-  id            String   @id @default(cuid())
+  id            String   @id @default(uuid()) @db.Uuid
   name          String
   code          String   @unique  // e.g. "KNH", "NW-HOSP"
   type          FacilityType
@@ -168,7 +168,7 @@ model Facility {
 // ─────────────────────────────────────────────
 
 model MasterPatient {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
   mpiId             String   @unique // MPI-000124 — your system ID
 
   // IPRS verified identity (golden source)
@@ -226,7 +226,7 @@ model MasterPatient {
 // ─────────────────────────────────────────────
 
 model SourcePatientRecord {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   // link to master
   masterPatientId   String?  // null if not yet matched
@@ -274,7 +274,7 @@ model SourcePatientRecord {
 // ─────────────────────────────────────────────
 
 model Encounter {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   // links
   masterPatientId   String
@@ -333,7 +333,7 @@ model Encounter {
 // ─────────────────────────────────────────────
 
 model Diagnosis {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   // links
   masterPatientId   String
@@ -372,7 +372,7 @@ model Diagnosis {
 // ─────────────────────────────────────────────
 
 model LabResult {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   // links
   masterPatientId   String
@@ -423,7 +423,7 @@ model LabResult {
 // ─────────────────────────────────────────────
 
 model Medication {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   // links
   masterPatientId   String
@@ -478,7 +478,7 @@ model Medication {
 // ─────────────────────────────────────────────
 
 model MatchLog {
-  id                  String   @id @default(cuid())
+  id                  String   @id @default(uuid()) @db.Uuid
 
   // what was being matched
   sourceRecordId      String
@@ -518,7 +518,7 @@ model MatchLog {
 // ─────────────────────────────────────────────
 
 model MergeLog {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   // which records were merged
   sourcePatientId   String   // the record that got merged away
@@ -550,7 +550,7 @@ model MergeLog {
 // ─────────────────────────────────────────────
 
 model RiskScore {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   masterPatientId   String
   masterPatient     MasterPatient @relation(fields: [masterPatientId], references: [id])
@@ -573,7 +573,7 @@ model RiskScore {
 // ─────────────────────────────────────────────
 
 model SyncLog {
-  id                String   @id @default(cuid())
+  id                String   @id @default(uuid()) @db.Uuid
 
   facilityId        String
   facility          Facility @relation(fields: [facilityId], references: [id])

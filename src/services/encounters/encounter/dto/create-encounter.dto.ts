@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsDate, IsOptional, IsNumber } from "class-validator";
-import { EncounterStatus, EncounterType } from '@prisma/client';
+import { EncounterStatus, EncounterType } from 'generated/prisma/client';
 
 export class CreateEncounterDto {
   // links

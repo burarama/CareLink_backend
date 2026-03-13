@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsBoolean, IsOptional } from "class-validator";
-import { FacilityType } from '@prisma/client';
+import { FacilityType } from 'generated/prisma/client';
 
 export class CreateFacultyDto {
     @IsString()

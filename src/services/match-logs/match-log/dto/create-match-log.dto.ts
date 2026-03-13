@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsDate, IsOptional, IsNumber } from "class-validator";
-import { MatchStatus, MatchMethod } from '@prisma/client';
+import { MatchStatus, MatchMethod } from 'generated/prisma/client';
 
 export class CreateMatchLogDto {
   @IsString()
