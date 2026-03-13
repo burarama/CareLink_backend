@@ -13,7 +13,18 @@ export class FacilityPatientService {
   }
 
   findAll() {
-    return `This action returns all facilityPatient`;
+    return this.prisma.facilityPatient.findMany({
+      include: {
+        facility: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    }).then(patients => patients.map(({ facility, ...rest }) => ({
+      ...rest,
+      facilityName: facility?.name,
+    })));
   }
 
   findOne(id: number) {
