@@ -7,12 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class EncounterService {
   constructor(private prisma: PrismaService) { }
   create(createEncounterDto: CreateEncounterDto) {
-    return this.prisma.encounter.create({
-      data: {
-        ...createEncounterDto,
-        createdAt: new Date(),
-      },
-    });
+    return 'Hello';
   }
 
   findAll() {
@@ -28,38 +23,7 @@ export class EncounterService {
   }
 
   update(id: string, updateEncounterDto: UpdateEncounterDto) {
-    return this.prisma.encounter.update({
-      where: {
-        id: id,
-      },
-      data: {
-        masterPatientId: updateEncounterDto.masterPatientId,
-        sourceRecordId: updateEncounterDto.sourceRecordId,
-        facilityId: updateEncounterDto.facilityId,
-        facilityEncounterId: updateEncounterDto.facilityEncounterId,
-        fhirEncounterId: updateEncounterDto.fhirEncounterId,
-        type: updateEncounterDto.type,
-        status: updateEncounterDto.status,
-        class: updateEncounterDto.class,
-        startDate: updateEncounterDto.startDate,
-        endDate: updateEncounterDto.endDate,
-        admissionDate: updateEncounterDto.admissionDate,
-        dischargeDate: updateEncounterDto.dischargeDate,
-        lengthOfStay: updateEncounterDto.lengthOfStay,
-        chiefComplaint: updateEncounterDto.chiefComplaint,
-        department: updateEncounterDto.department,
-        ward: updateEncounterDto.ward,
-        attendingProvider: updateEncounterDto.attendingProvider,
-        referredFrom: updateEncounterDto.referredFrom,
-        referredTo: updateEncounterDto.referredTo,
-        claimId: updateEncounterDto.claimId,
-        payerName: updateEncounterDto.payerName,
-        paymentStatus: updateEncounterDto.paymentStatus,
-        fhirResourceJson: updateEncounterDto.fhirResourceJson,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    });
+   return 'update';
   }
 
   remove(id: string) {

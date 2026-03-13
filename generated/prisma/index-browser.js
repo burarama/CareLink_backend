@@ -126,248 +126,36 @@ exports.Prisma.FacilityScalarFieldEnum = {
   code: 'code',
   type: 'type',
   county: 'county',
-  subCounty: 'subCounty',
-  hmisSystem: 'hmisSystem',
-  fhirEndpoint: 'fhirEndpoint',
   isActive: 'isActive',
   lastSyncAt: 'lastSyncAt',
   createdAt: 'createdAt'
 };
 
-exports.Prisma.MasterPatientScalarFieldEnum = {
+exports.Prisma.FacilityPatientScalarFieldEnum = {
   id: 'id',
-  mpiId: 'mpiId',
-  nationalId: 'nationalId',
-  iprsVerified: 'iprsVerified',
-  iprsVerifiedAt: 'iprsVerifiedAt',
-  iprsMatchScore: 'iprsMatchScore',
-  fullName: 'fullName',
-  firstName: 'firstName',
-  middleName: 'middleName',
-  lastName: 'lastName',
-  dateOfBirth: 'dateOfBirth',
-  gender: 'gender',
-  bloodType: 'bloodType',
-  nationality: 'nationality',
-  phoneNumber: 'phoneNumber',
-  alternatePhone: 'alternatePhone',
-  email: 'email',
-  county: 'county',
-  subCounty: 'subCounty',
-  ward: 'ward',
-  village: 'village',
-  status: 'status',
-  mergedIntoId: 'mergedIntoId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  createdBy: 'createdBy'
-};
-
-exports.Prisma.SourcePatientRecordScalarFieldEnum = {
-  id: 'id',
-  masterPatientId: 'masterPatientId',
-  matchStatus: 'matchStatus',
-  matchConfidence: 'matchConfidence',
-  matchedAt: 'matchedAt',
-  matchedBy: 'matchedBy',
   facilityId: 'facilityId',
-  facilityPatientId: 'facilityPatientId',
-  facilityMrn: 'facilityMrn',
-  rawFullName: 'rawFullName',
-  rawDateOfBirth: 'rawDateOfBirth',
-  rawGender: 'rawGender',
-  rawNationalId: 'rawNationalId',
-  rawPhoneNumber: 'rawPhoneNumber',
-  rawCounty: 'rawCounty',
-  fhirResourceId: 'fhirResourceId',
-  fhirResourceJson: 'fhirResourceJson',
-  sourceSyncAt: 'sourceSyncAt',
-  sourceCreatedAt: 'sourceCreatedAt',
-  createdAt: 'createdAt'
+  masterPatientId: 'masterPatientId',
+  externalId: 'externalId'
 };
 
 exports.Prisma.EncounterScalarFieldEnum = {
   id: 'id',
   masterPatientId: 'masterPatientId',
-  sourceRecordId: 'sourceRecordId',
-  facilityId: 'facilityId',
-  facilityEncounterId: 'facilityEncounterId',
-  fhirEncounterId: 'fhirEncounterId',
-  type: 'type',
-  status: 'status',
-  class: 'class',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  admissionDate: 'admissionDate',
-  dischargeDate: 'dischargeDate',
-  lengthOfStay: 'lengthOfStay',
-  chiefComplaint: 'chiefComplaint',
-  department: 'department',
-  ward: 'ward',
-  attendingProvider: 'attendingProvider',
-  referredFrom: 'referredFrom',
-  referredTo: 'referredTo',
-  claimId: 'claimId',
-  payerName: 'payerName',
-  paymentStatus: 'paymentStatus',
-  fhirResourceJson: 'fhirResourceJson',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  facilityPatientId: 'facilityPatientId',
+  encounterDate: 'encounterDate'
 };
 
-exports.Prisma.DiagnosisScalarFieldEnum = {
+exports.Prisma.MasterPatientScalarFieldEnum = {
   id: 'id',
-  masterPatientId: 'masterPatientId',
-  encounterId: 'encounterId',
-  icdCode: 'icdCode',
-  icdVersion: 'icdVersion',
-  icdDescription: 'icdDescription',
-  icdChapter: 'icdChapter',
-  icdBlock: 'icdBlock',
-  diagnosisType: 'diagnosisType',
-  status: 'status',
-  severity: 'severity',
-  onsetDate: 'onsetDate',
-  resolvedDate: 'resolvedDate',
-  notes: 'notes',
-  diagnosedBy: 'diagnosedBy',
-  facilityId: 'facilityId',
-  fhirResourceJson: 'fhirResourceJson',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.LabResultScalarFieldEnum = {
-  id: 'id',
-  masterPatientId: 'masterPatientId',
-  encounterId: 'encounterId',
-  testCode: 'testCode',
-  testName: 'testName',
-  testCategory: 'testCategory',
-  resultValue: 'resultValue',
-  resultNumeric: 'resultNumeric',
-  resultUnit: 'resultUnit',
-  resultStatus: 'resultStatus',
-  interpretation: 'interpretation',
-  isAbnormal: 'isAbnormal',
-  isCritical: 'isCritical',
-  referenceRangeLow: 'referenceRangeLow',
-  referenceRangeHigh: 'referenceRangeHigh',
-  referenceRangeText: 'referenceRangeText',
-  orderedAt: 'orderedAt',
-  collectedAt: 'collectedAt',
-  resultAt: 'resultAt',
-  reportedAt: 'reportedAt',
-  facilityId: 'facilityId',
-  orderedBy: 'orderedBy',
-  performedBy: 'performedBy',
-  labName: 'labName',
-  fhirResourceJson: 'fhirResourceJson',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.MedicationScalarFieldEnum = {
-  id: 'id',
-  masterPatientId: 'masterPatientId',
-  encounterId: 'encounterId',
-  medicationCode: 'medicationCode',
-  medicationName: 'medicationName',
-  brandName: 'brandName',
-  form: 'form',
-  strength: 'strength',
-  dose: 'dose',
-  frequency: 'frequency',
-  route: 'route',
-  durationDays: 'durationDays',
-  quantity: 'quantity',
-  prescribedAt: 'prescribedAt',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  dispensedAt: 'dispensedAt',
-  status: 'status',
-  stopReason: 'stopReason',
-  isChronicMed: 'isChronicMed',
-  hasInteractionFlag: 'hasInteractionFlag',
-  interactionNote: 'interactionNote',
-  facilityId: 'facilityId',
-  prescribedBy: 'prescribedBy',
-  dispensedBy: 'dispensedBy',
-  fhirResourceJson: 'fhirResourceJson',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.MatchLogScalarFieldEnum = {
-  id: 'id',
-  sourceRecordId: 'sourceRecordId',
-  candidateMasterId: 'candidateMasterId',
-  matchStatus: 'matchStatus',
-  confidenceScore: 'confidenceScore',
-  matchMethod: 'matchMethod',
-  nationalIdScore: 'nationalIdScore',
-  nameScore: 'nameScore',
-  dobScore: 'dobScore',
-  phoneScore: 'phoneScore',
-  genderScore: 'genderScore',
-  iprsScore: 'iprsScore',
-  decidedBy: 'decidedBy',
-  decidedAt: 'decidedAt',
-  reviewNotes: 'reviewNotes',
-  triggerEvent: 'triggerEvent',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.MergeLogScalarFieldEnum = {
-  id: 'id',
-  sourcePatientId: 'sourcePatientId',
-  targetPatientId: 'targetPatientId',
-  mergedBy: 'mergedBy',
-  mergedAt: 'mergedAt',
-  mergeReason: 'mergeReason',
-  confidenceScore: 'confidenceScore',
-  sourceSnapshot: 'sourceSnapshot',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.RiskScoreScalarFieldEnum = {
-  id: 'id',
-  masterPatientId: 'masterPatientId',
-  scoreType: 'scoreType',
-  scoreValue: 'scoreValue',
-  scoreLabel: 'scoreLabel',
-  modelVersion: 'modelVersion',
-  factors: 'factors',
-  validUntil: 'validUntil',
-  calculatedAt: 'calculatedAt'
-};
-
-exports.Prisma.SyncLogScalarFieldEnum = {
-  id: 'id',
-  facilityId: 'facilityId',
-  syncType: 'syncType',
-  status: 'status',
-  recordsPulled: 'recordsPulled',
-  recordsProcessed: 'recordsProcessed',
-  recordsFailed: 'recordsFailed',
-  newPatients: 'newPatients',
-  matchedPatients: 'matchedPatients',
-  reviewQueue: 'reviewQueue',
-  startedAt: 'startedAt',
-  completedAt: 'completedAt',
-  errorMessage: 'errorMessage',
-  syncMetadata: 'syncMetadata'
+  firstName: 'firstName',
+  lastName: 'lastName',
+  dob: 'dob',
+  gender: 'gender'
 };
 
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
-};
-
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull
-};
-
-exports.Prisma.JsonNullValueInput = {
-  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -379,12 +167,6 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
-
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
-};
 exports.FacilityType = exports.$Enums.FacilityType = {
   PUBLIC_HOSPITAL: 'PUBLIC_HOSPITAL',
   PRIVATE_HOSPITAL: 'PRIVATE_HOSPITAL',
@@ -394,127 +176,11 @@ exports.FacilityType = exports.$Enums.FacilityType = {
   LABORATORY: 'LABORATORY'
 };
 
-exports.Gender = exports.$Enums.Gender = {
-  MALE: 'MALE',
-  FEMALE: 'FEMALE',
-  OTHER: 'OTHER',
-  UNKNOWN: 'UNKNOWN'
-};
-
-exports.BloodType = exports.$Enums.BloodType = {
-  A_POSITIVE: 'A_POSITIVE',
-  A_NEGATIVE: 'A_NEGATIVE',
-  B_POSITIVE: 'B_POSITIVE',
-  B_NEGATIVE: 'B_NEGATIVE',
-  AB_POSITIVE: 'AB_POSITIVE',
-  AB_NEGATIVE: 'AB_NEGATIVE',
-  O_POSITIVE: 'O_POSITIVE',
-  O_NEGATIVE: 'O_NEGATIVE',
-  UNKNOWN: 'UNKNOWN'
-};
-
-exports.MasterPatientStatus = exports.$Enums.MasterPatientStatus = {
-  ACTIVE: 'ACTIVE',
-  DECEASED: 'DECEASED',
-  MERGED: 'MERGED',
-  DUPLICATE: 'DUPLICATE',
-  INACTIVE: 'INACTIVE'
-};
-
-exports.MatchStatus = exports.$Enums.MatchStatus = {
-  PENDING: 'PENDING',
-  AUTO_MATCHED: 'AUTO_MATCHED',
-  MANUAL_MATCHED: 'MANUAL_MATCHED',
-  NO_MATCH: 'NO_MATCH',
-  REVIEW: 'REVIEW',
-  REJECTED: 'REJECTED'
-};
-
-exports.EncounterType = exports.$Enums.EncounterType = {
-  OUTPATIENT: 'OUTPATIENT',
-  INPATIENT: 'INPATIENT',
-  EMERGENCY: 'EMERGENCY',
-  VIRTUAL: 'VIRTUAL',
-  HOME_VISIT: 'HOME_VISIT',
-  DAY_CASE: 'DAY_CASE'
-};
-
-exports.EncounterStatus = exports.$Enums.EncounterStatus = {
-  PLANNED: 'PLANNED',
-  IN_PROGRESS: 'IN_PROGRESS',
-  FINISHED: 'FINISHED',
-  CANCELLED: 'CANCELLED',
-  UNKNOWN: 'UNKNOWN'
-};
-
-exports.DiagnosisType = exports.$Enums.DiagnosisType = {
-  PRIMARY: 'PRIMARY',
-  SECONDARY: 'SECONDARY',
-  COMORBIDITY: 'COMORBIDITY',
-  DISCHARGE: 'DISCHARGE',
-  REFERRAL: 'REFERRAL'
-};
-
-exports.DiagnosisStatus = exports.$Enums.DiagnosisStatus = {
-  ACTIVE: 'ACTIVE',
-  RESOLVED: 'RESOLVED',
-  CHRONIC: 'CHRONIC',
-  RULED_OUT: 'RULED_OUT',
-  REMISSION: 'REMISSION'
-};
-
-exports.LabCategory = exports.$Enums.LabCategory = {
-  HEMATOLOGY: 'HEMATOLOGY',
-  BIOCHEMISTRY: 'BIOCHEMISTRY',
-  MICROBIOLOGY: 'MICROBIOLOGY',
-  IMMUNOLOGY: 'IMMUNOLOGY',
-  PATHOLOGY: 'PATHOLOGY',
-  IMAGING: 'IMAGING',
-  OTHER: 'OTHER'
-};
-
-exports.LabResultStatus = exports.$Enums.LabResultStatus = {
-  FINAL: 'FINAL',
-  PRELIMINARY: 'PRELIMINARY',
-  CORRECTED: 'CORRECTED',
-  CANCELLED: 'CANCELLED',
-  ENTERED_IN_ERROR: 'ENTERED_IN_ERROR'
-};
-
-exports.MedicationStatus = exports.$Enums.MedicationStatus = {
-  ACTIVE: 'ACTIVE',
-  COMPLETED: 'COMPLETED',
-  STOPPED: 'STOPPED',
-  ON_HOLD: 'ON_HOLD',
-  UNKNOWN: 'UNKNOWN'
-};
-
-exports.MatchMethod = exports.$Enums.MatchMethod = {
-  NATIONAL_ID: 'NATIONAL_ID',
-  IPRS: 'IPRS',
-  PROBABILISTIC: 'PROBABILISTIC',
-  MANUAL: 'MANUAL'
-};
-
-exports.SyncStatus = exports.$Enums.SyncStatus = {
-  STARTED: 'STARTED',
-  COMPLETED: 'COMPLETED',
-  FAILED: 'FAILED',
-  PARTIAL: 'PARTIAL'
-};
-
 exports.Prisma.ModelName = {
   Facility: 'Facility',
-  MasterPatient: 'MasterPatient',
-  SourcePatientRecord: 'SourcePatientRecord',
+  FacilityPatient: 'FacilityPatient',
   Encounter: 'Encounter',
-  Diagnosis: 'Diagnosis',
-  LabResult: 'LabResult',
-  Medication: 'Medication',
-  MatchLog: 'MatchLog',
-  MergeLog: 'MergeLog',
-  RiskScore: 'RiskScore',
-  SyncLog: 'SyncLog'
+  MasterPatient: 'MasterPatient'
 };
 
 /**

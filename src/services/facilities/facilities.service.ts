@@ -13,12 +13,7 @@ export class FacilitiesService {
         code: createFacilityDto.code,
         type: createFacilityDto.type,
         county: createFacilityDto.county,
-        subCounty: createFacilityDto.subCounty,
-        hmisSystem: createFacilityDto.hmisSystem,
-        fhirEndpoint: createFacilityDto.fhirEndpoint,
-        isActive: createFacilityDto.isActive,
-        createdAt: new Date(),
-        // updatedAt: new Date(),
+        isActive: createFacilityDto.isActive ?? true,
       },
     });
   }

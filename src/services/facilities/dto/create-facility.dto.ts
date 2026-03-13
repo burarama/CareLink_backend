@@ -14,23 +14,7 @@ export class CreateFacilityDto {
     @IsString()
     county: string;
 
-    @IsString()
-    @IsOptional()
-    subCounty?: string;
-
-    @IsString()
-    @IsOptional()
-    hmisSystem?: string;
-
-    @IsString()
-    @IsOptional()
-    fhirEndpoint?: string;
-
     @IsBoolean()
     @IsOptional()
     isActive?: boolean;
-
-    @IsString()
-    @IsOptional()
-    createdBy?: string;
 }

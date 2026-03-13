@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -134,462 +129,51 @@ enum SyncStatus {
   PARTIAL
 }
 
-// ─────────────────────────────────────────────
-// SOURCE FACILITIES
-// Hospitals / clinics contributing data
-// ─────────────────────────────────────────────
-
 model Facility {
-  id           String       @id @default(uuid()) @db.Uuid
-  name         String
-  code         String       @unique // e.g. "KNH", "NW-HOSP"
-  type         FacilityType
-  county       String
-  subCounty    String?
-  hmisSystem   String? // "KenyaEMR" | "OpenMRS" | "Meditech"
-  fhirEndpoint String? // FHIR R4 base URL
-  isActive     Boolean      @default(true)
-  lastSyncAt   DateTime?
-  createdAt    DateTime     @default(now())
-
-  // relations
-  sourcePatients SourcePatientRecord[]
-  encounters     Encounter[]
-  syncLogs       SyncLog[]
+  id         String            @id @default(uuid()) @db.Uuid
+  name       String
+  code       String            @unique
+  type       FacilityType
+  patients   FacilityPatient[]
+  county     String
+  isActive   Boolean           @default(true)
+  lastSyncAt DateTime?
+  createdAt  DateTime          @default(now())
 
   @@map("facilities")
 }
 
-// ─────────────────────────────────────────────
-// MASTER PATIENT INDEX (MPI)
-// One record per unique real-world person
-// This is YOUR system's canonical patient
-// ─────────────────────────────────────────────
+//facility patient
+model FacilityPatient {
+  id              String  @id @default(uuid()) @db.Uuid
+  facilityId      String  @db.Uuid
+  masterPatientId String? @db.Uuid
+  externalId      String // patient ID in that hospital
 
-model MasterPatient {
-  id    String @id @default(uuid()) @db.Uuid
-  mpiId String @unique // MPI-000124 — your system ID
-
-  // IPRS verified identity (golden source)
-  nationalId     String?   @unique
-  iprsVerified   Boolean   @default(false)
-  iprsVerifiedAt DateTime?
-  iprsMatchScore Float? // 0.0 - 1.0
-
-  // canonical demographics (from IPRS or best source)
-  fullName    String
-  firstName   String
-  middleName  String?
-  lastName    String
-  dateOfBirth DateTime
-  gender      Gender
-  bloodType   BloodType?
-  nationality String     @default("Kenyan")
-
-  // contact
-  phoneNumber    String?
-  alternatePhone String?
-  email          String?
-
-  // location
-  county    String?
-  subCounty String?
-  ward      String?
-  village   String?
-
-  // system fields
-  status       MasterPatientStatus @default(ACTIVE)
-  mergedIntoId String? // if this record was merged into another
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @updatedAt
-  createdBy    String? // system or user who created
-
-  // relations
-  sourceRecords SourcePatientRecord[]
-  encounters    Encounter[]
-  diagnoses     Diagnosis[]
-  labResults    LabResult[]
-  medications   Medication[]
-  matchLog      MatchLog[]
-  mergeLog      MergeLog[]            @relation("MergedFrom")
-  mergedInto    MergeLog[]            @relation("MergedInto")
-  riskScores    RiskScore[]
-
-  @@map("master_patients")
-}
-
-// ─────────────────────────────────────────────
-// SOURCE PATIENT RECORDS
-// Raw patient record as it came from a hospital
-// Never modified after creation — immutable
-// ─────────────────────────────────────────────
-
-model SourcePatientRecord {
-  id String @id @default(uuid()) @db.Uuid
-
-  // link to master
-  masterPatientId String? // null if not yet matched
-  matchStatus     MatchStatus @default(PENDING)
-  matchConfidence Float? // 0.0 - 1.0
-  matchedAt       DateTime?
-  matchedBy       String? // "SYSTEM_AUTO" or userId
-
-  // source facility
-  facilityId String
-  facility   Facility @relation(fields: [facilityId], references: [id])
-
-  // original IDs from the hospital system
-  facilityPatientId String // hospital's own patient ID
-  facilityMrn       String? // medical record number
-
-  // raw demographics as received from HMIS
-  rawFullName    String
-  rawDateOfBirth DateTime?
-  rawGender      String?
-  rawNationalId  String?
-  rawPhoneNumber String?
-  rawCounty      String?
-
-  // source metadata
-  fhirResourceId   String? // FHIR Patient resource ID
-  fhirResourceJson Json? // full FHIR resource stored as-is
-  sourceSyncAt     DateTime  @default(now())
-  sourceCreatedAt  DateTime? // when hospital created this record
-
-  createdAt DateTime @default(now())
-
-  // relations
+  facility      Facility       @relation(fields: [facilityId], references: [id])
   masterPatient MasterPatient? @relation(fields: [masterPatientId], references: [id])
-  encounters    Encounter[]
-  matchLog      MatchLog[]
-
-  @@unique([facilityId, facilityPatientId])
-  @@map("source_patient_records")
+  encounters    Encounter[] // ← add this
 }
 
-// ─────────────────────────────────────────────
-// ENCOUNTERS / VISITS
-// Every hospital visit linked to master patient
-// ─────────────────────────────────────────────
-
+//encounter
 model Encounter {
-  id String @id @default(uuid()) @db.Uuid
+  id                String   @id @default(uuid()) @db.Uuid
+  masterPatientId   String   @db.Uuid
+  facilityPatientId String   @db.Uuid
+  encounterDate     DateTime @default(now())
 
-  // links
-  masterPatientId String
-  masterPatient   MasterPatient        @relation(fields: [masterPatientId], references: [id])
-  sourceRecordId  String?
-  sourceRecord    SourcePatientRecord? @relation(fields: [sourceRecordId], references: [id])
-  facilityId      String
-  facility        Facility             @relation(fields: [facilityId], references: [id])
-
-  // source identifiers
-  facilityEncounterId String? // hospital's own visit ID
-  fhirEncounterId     String?
-
-  // encounter details
-  type   EncounterType // OUTPATIENT | INPATIENT | EMERGENCY | VIRTUAL
-  status EncounterStatus // PLANNED | IN_PROGRESS | FINISHED | CANCELLED
-  class  String? // "AMB" | "IMP" | "EMER" (FHIR class codes)
-
-  // timing
-  startDate     DateTime
-  endDate       DateTime?
-  admissionDate DateTime?
-  dischargeDate DateTime?
-  lengthOfStay  Int? // days, calculated on discharge
-
-  // clinical context
-  chiefComplaint    String?
-  department        String? // "Emergency" | "Cardiology" | "Outpatient"
-  ward              String?
-  attendingProvider String? // doctor name
-  referredFrom      String? // if referred from another facility
-  referredTo        String? // if referred out
-
-  // financial (optional — links to MediLink if connected)
-  claimId       String? // MediLink claim ID if billing exists
-  payerName     String?
-  paymentStatus String?
-
-  // raw FHIR
-  fhirResourceJson Json?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // relations
-  diagnoses   Diagnosis[]
-  labResults  LabResult[]
-  medications Medication[]
-
-  @@map("encounters")
+  masterPatient   MasterPatient   @relation(fields: [masterPatientId], references: [id])
+  facilityPatient FacilityPatient @relation(fields: [facilityPatientId], references: [id])
 }
 
-// ─────────────────────────────────────────────
-// DIAGNOSES
-// ICD-10 coded diagnoses per encounter
-// ─────────────────────────────────────────────
+//master patient
+model MasterPatient {
+  id        String    @id @default(uuid()) @db.Uuid
+  firstName String
+  lastName  String
+  dob       DateTime?
+  gender    String?
 
-model Diagnosis {
-  id String @id @default(uuid()) @db.Uuid
-
-  // links
-  masterPatientId String
-  masterPatient   MasterPatient @relation(fields: [masterPatientId], references: [id])
-  encounterId     String
-  encounter       Encounter     @relation(fields: [encounterId], references: [id])
-
-  // ICD-10
-  icdCode        String // e.g. "J06.9"
-  icdVersion     String  @default("ICD-10")
-  icdDescription String // "Acute upper respiratory infection, unspecified"
-  icdChapter     String? // "Respiratory" — derived from code range
-  icdBlock       String? // "J00-J06"
-
-  // clinical details
-  diagnosisType DiagnosisType // PRIMARY | SECONDARY | COMORBIDITY | DISCHARGE
-  status        DiagnosisStatus // ACTIVE | RESOLVED | CHRONIC | RULED_OUT
-  severity      String? // "Mild" | "Moderate" | "Severe"
-  onsetDate     DateTime?
-  resolvedDate  DateTime?
-  notes         String?
-
-  // source
-  diagnosedBy      String?
-  facilityId       String?
-  fhirResourceJson Json?
-
-  createdAt DateTime @default(now())
-
-  @@map("diagnoses")
-}
-
-// ─────────────────────────────────────────────
-// LAB RESULTS
-// All laboratory tests across all facilities
-// ─────────────────────────────────────────────
-
-model LabResult {
-  id String @id @default(uuid()) @db.Uuid
-
-  // links
-  masterPatientId String
-  masterPatient   MasterPatient @relation(fields: [masterPatientId], references: [id])
-  encounterId     String?
-  encounter       Encounter?    @relation(fields: [encounterId], references: [id])
-
-  // test details
-  testCode     String // LOINC code e.g. "2085-9"
-  testName     String // "HDL Cholesterol"
-  testCategory LabCategory // HEMATOLOGY | BIOCHEMISTRY | MICROBIOLOGY | IMAGING | OTHER
-
-  // result
-  resultValue    String? // stored as string to handle numeric + text results
-  resultNumeric  Float? // if numeric — for trending
-  resultUnit     String? // "mg/dL" | "mmol/L"
-  resultStatus   LabResultStatus // FINAL | PRELIMINARY | CORRECTED | CANCELLED
-  interpretation String? // "Normal" | "High" | "Low" | "Critical"
-  isAbnormal     Boolean         @default(false)
-  isCritical     Boolean         @default(false)
-
-  // reference range
-  referenceRangeLow  Float?
-  referenceRangeHigh Float?
-  referenceRangeText String?
-
-  // timing
-  orderedAt   DateTime?
-  collectedAt DateTime?
-  resultAt    DateTime
-  reportedAt  DateTime?
-
-  // source
-  facilityId       String?
-  orderedBy        String?
-  performedBy      String?
-  labName          String?
-  fhirResourceJson Json?
-
-  createdAt DateTime @default(now())
-
-  @@map("lab_results")
-}
-
-// ─────────────────────────────────────────────
-// MEDICATIONS + PRESCRIPTIONS
-// All medications prescribed across all facilities
-// ─────────────────────────────────────────────
-
-model Medication {
-  id String @id @default(uuid()) @db.Uuid
-
-  // links
-  masterPatientId String
-  masterPatient   MasterPatient @relation(fields: [masterPatientId], references: [id])
-  encounterId     String?
-  encounter       Encounter?    @relation(fields: [encounterId], references: [id])
-
-  // drug details
-  medicationCode String? // ATC code or local formulary code
-  medicationName String // generic name
-  brandName      String?
-  form           String? // "Tablet" | "Capsule" | "Injection" | "Syrup"
-  strength       String? // "500mg" | "10mg/5ml"
-
-  // dosage
-  dose         String? // "1 tablet"
-  frequency    String? // "Twice daily"
-  route        String? // "Oral" | "IV" | "IM" | "Topical"
-  durationDays Int?
-  quantity     Int? // quantity dispensed
-
-  // timing
-  prescribedAt DateTime
-  startDate    DateTime?
-  endDate      DateTime?
-  dispensedAt  DateTime?
-
-  // status
-  status       MedicationStatus // ACTIVE | COMPLETED | STOPPED | ON_HOLD
-  stopReason   String?
-  isChronicMed Boolean          @default(false)
-
-  // interactions (flagged by system)
-  hasInteractionFlag Boolean @default(false)
-  interactionNote    String?
-
-  // source
-  facilityId       String?
-  prescribedBy     String?
-  dispensedBy      String?
-  fhirResourceJson Json?
-
-  createdAt DateTime @default(now())
-
-  @@map("medications")
-}
-
-// ─────────────────────────────────────────────
-// IDENTITY MATCH LOG
-// Every matching decision — automated or manual
-// Full audit trail of how records got linked
-// ─────────────────────────────────────────────
-
-model MatchLog {
-  id String @id @default(uuid()) @db.Uuid
-
-  // what was being matched
-  sourceRecordId    String
-  sourceRecord      SourcePatientRecord @relation(fields: [sourceRecordId], references: [id])
-  candidateMasterId String?
-  masterPatient     MasterPatient?      @relation(fields: [candidateMasterId], references: [id])
-
-  // match result
-  matchStatus     MatchStatus // AUTO_MATCHED | MANUAL_MATCHED | NO_MATCH | REVIEW
-  confidenceScore Float // 0.0 - 1.0
-  matchMethod     MatchMethod // NATIONAL_ID | PROBABILISTIC | IPRS | MANUAL
-
-  // score breakdown (how confidence was calculated)
-  nationalIdScore Float? // 1.0 if exact match, 0 if missing
-  nameScore       Float? // Jaro-Winkler similarity
-  dobScore        Float? // 1.0 exact, 0.5 year only, 0 mismatch
-  phoneScore      Float?
-  genderScore     Float?
-  iprsScore       Float?
-
-  // decision
-  decidedBy   String? // "SYSTEM_AUTO" or userId
-  decidedAt   DateTime @default(now())
-  reviewNotes String? // if human reviewed
-
-  // what triggered this match attempt
-  triggerEvent String? // "SYNC_KNH" | "MANUAL_REVIEW" | "API_INGEST"
-
-  createdAt DateTime @default(now())
-
-  @@map("match_logs")
-}
-
-// ─────────────────────────────────────────────
-// MERGE LOG
-// When two master records are merged into one
-// ─────────────────────────────────────────────
-
-model MergeLog {
-  id String @id @default(uuid()) @db.Uuid
-
-  // which records were merged
-  sourcePatientId String // the record that got merged away
-  targetPatientId String // the surviving master record
-
-  // relations (owns the FKs)
-  mergedFrom MasterPatient @relation("MergedFrom", fields: [sourcePatientId], references: [id])
-  mergedInto MasterPatient @relation("MergedInto", fields: [targetPatientId], references: [id])
-
-  // decision
-  mergedBy        String // userId or "SYSTEM_AUTO"
-  mergedAt        DateTime @default(now())
-  mergeReason     String?
-  confidenceScore Float?
-
-  // snapshot of source record before merge (for recovery)
-  sourceSnapshot Json
-
-  createdAt DateTime @default(now())
-
-  @@map("merge_logs")
-}
-
-// ─────────────────────────────────────────────
-// RISK SCORES
-// ML-generated patient risk assessments
-// Stored separately so they can be updated
-// without touching the immutable health records
-// ─────────────────────────────────────────────
-
-model RiskScore {
-  id String @id @default(uuid()) @db.Uuid
-
-  masterPatientId String
-  masterPatient   MasterPatient @relation(fields: [masterPatientId], references: [id])
-
-  scoreType    String // "CHRONIC_DISEASE" | "READMISSION" | "MEDICATION_ADHERENCE"
-  scoreValue   Float // 0.0 - 1.0
-  scoreLabel   String // "Low" | "Medium" | "High" | "Critical"
-  modelVersion String // which ML model version generated this
-  factors      Json // contributing factors as JSON array
-  validUntil   DateTime // scores expire and get recalculated
-
-  calculatedAt DateTime @default(now())
-
-  @@map("risk_scores")
-}
-
-// ─────────────────────────────────────────────
-// SYNC LOGS
-// Track every data pull from each facility
-// ─────────────────────────────────────────────
-
-model SyncLog {
-  id String @id @default(uuid()) @db.Uuid
-
-  facilityId String
-  facility   Facility @relation(fields: [facilityId], references: [id])
-
-  syncType         String // "FULL" | "INCREMENTAL" | "PATIENT" | "ENCOUNTER"
-  status           SyncStatus // STARTED | COMPLETED | FAILED | PARTIAL
-  recordsPulled    Int        @default(0)
-  recordsProcessed Int        @default(0)
-  recordsFailed    Int        @default(0)
-  newPatients      Int        @default(0)
-  matchedPatients  Int        @default(0)
-  reviewQueue      Int        @default(0) // flagged for human review
-
-  startedAt    DateTime  @default(now())
-  completedAt  DateTime?
-  errorMessage String?
-  syncMetadata Json? // additional context
-
-  @@map("sync_logs")
+  sourcePatients FacilityPatient[]
+  encounters     Encounter[]
 }
