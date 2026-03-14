@@ -174,7 +174,7 @@ model Encounter {
 model MasterPatient {
   id        String    @id @default(uuid()) @db.Uuid
   firstName String
-  idNumber String
+  idNumber String?
   lastName  String
   dob       DateTime?
   gender    String?

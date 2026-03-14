@@ -2,12 +2,18 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { FacilitiesService } from './facilities.service';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
+import { ApiBody, ApiOperation, ApiResponse} from '@nestjs/swagger';
 
 @Controller('facilities')
 export class FacilitiesController {
   constructor(private readonly facilitiesService: FacilitiesService) {}
 
   @Post()
+  // @HttpCode(HttpStatus.OK)
+  @ApiOperation({ summary: 'Register facility'})
+  @ApiBody({ type: CreateFacilityDto})
+  @ApiResponse({ status: 201, description: 'facility data'})
+  @ApiResponse({ status: 400, description: 'Bad request' })
   create(@Body() createFacilityDto: CreateFacilityDto) {
     return this.facilitiesService.create(createFacilityDto);
   }
