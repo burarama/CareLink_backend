@@ -12,6 +12,7 @@ export class EncounterService {
         masterPatientId: createEncounterDto.masterPatientId,
         facilityPatientId: createEncounterDto.facilityPatientId,
         encounterDate: createEncounterDto.encounterDate,
+        facilityId: createEncounterDto.facilityId
       },
     });
   }

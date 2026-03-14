@@ -9,6 +9,9 @@ export class CreateEncounterDto {
   @IsString()
   facilityPatientId: string;
 
+  @IsString()
+  facilityId: string;
+
   @IsDate()
   @Type(() => Date)
   encounterDate: Date;
