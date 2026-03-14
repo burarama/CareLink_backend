@@ -7,7 +7,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class EncounterService {
   constructor(private prisma: PrismaService) { }
   create(createEncounterDto: CreateEncounterDto) {
-    return 'Hello';
+    return this.prisma.encounter.create({
+      data: {
+        masterPatientId: createEncounterDto.masterPatientId,
+        facilityPatientId: createEncounterDto.facilityPatientId,
+        encounterDate: createEncounterDto.encounterDate,
+        facilityId: createEncounterDto.facilityId
+      },
+    });
   }
 
   findAll() {

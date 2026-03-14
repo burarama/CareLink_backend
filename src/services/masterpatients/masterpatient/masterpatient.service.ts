@@ -7,11 +7,22 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class MasterpatientService {
   constructor(private readonly prisma: PrismaService) { }
   create(createMasterpatientDto: CreateMasterpatientDto) {
-  return 'Hello';
+    return this.prisma.masterPatient.create({
+      data: {
+        firstName: createMasterpatientDto.firstName,
+        lastName: createMasterpatientDto.lastName,
+        dob: createMasterpatientDto.dob,
+        gender: createMasterpatientDto.gender,
+      },
+    });
   }
 
   findAll() {
-    return 'find all';
+    return this.prisma.masterPatient.findMany({
+      orderBy: {
+        firstName: 'asc',
+      },
+    });
   }
 
   findOne(id: string) {
